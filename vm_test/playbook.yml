@@ -1,0 +1,17 @@
+---
+- hosts: all
+  vars:
+    dev_user: "install"
+    dev_password: "$6$rounds=656000$7BRN95ZRiJmPz1r4$vRAbeBpB988.NdwWRax0HWDBAdkIHnAqAZrlPfUqwcDjA9xV1ABFn5ovIjUcyVRHii4qg235VGm3kNYdscqOa1"
+  sudo: true
+  tasks:
+   - name: Add dev user
+     user: name={{ dev_user }}
+           state=present
+           groups="sudo"
+           password={{ dev_password }}
+           shell=/bin/bash
+   - name: Install server packages
+     apt: pkg={{ item }} state=installed update_cache=true
+     with_items:
+         - avahi-daemon
