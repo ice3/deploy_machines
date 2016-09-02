@@ -1,0 +1,22 @@
+---
+- name: Install Debian packages
+  apt: pkg={{item}} state=present update_cache=yes
+  with_items:
+    - python3.4
+    - git
+    - htop
+    - tree
+    - npm
+    - zsh
+
+- name: Install developper Debian packages
+  apt: pkg={{item}} state=present update_cache=yes
+  with_items:
+    - virtualbox-dkms
+    - virtualbox
+    - nfs-kernel-server
+    - nfs-common
+    - python-dev
+    - python3.4-dev
+    - g++
+    - make

@@ -1,0 +1,2 @@
+[test]
+install.local ansible_ssh_user=install ansible_ssh_pass=fundev ansible_become_pass=install

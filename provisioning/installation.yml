@@ -1,0 +1,14 @@
+---
+- name: Install system packages
+  hosts: test
+  sudo: True
+  gather_facts: True
+  roles:
+    - {role: 'general-dependancies'}
+
+- name: Install ViM
+  hosts: test
+  sudo: True
+  gather_facts: True
+  roles:
+    - {role: 'ansible-vim'}
