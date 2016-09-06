@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "boxcutter/ubuntu1604-desktop"
   config.vm.network :private_network, type: "dhcp"
   config.vm.hostname = "install"
   config.vm.provider "virtualbox" do |vb|

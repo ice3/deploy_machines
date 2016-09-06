@@ -1,13 +1,22 @@
 ---
+- name: Check if there are packages available to be installed/upgraded
+  command: /usr/lib/update-notifier/apt-check --package-names
+  register: packages
+
+- name: Upgrade all packages to the latest version
+  apt: update_cache=yes upgrade=dist
+  when: packages.stderr != ""
+
 - name: Install Debian packages
   apt: pkg={{item}} state=present update_cache=yes
   with_items:
-    - python3.4
+    - python2.7
     - git
     - htop
     - tree
     - npm
     - zsh
+    - byobu
 
 - name: Install developper Debian packages
   apt: pkg={{item}} state=present update_cache=yes
@@ -17,6 +26,7 @@
     - nfs-kernel-server
     - nfs-common
     - python-dev
-    - python3.4-dev
+    - python2.7-dev
     - g++
     - make
+

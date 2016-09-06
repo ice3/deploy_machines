@@ -1,0 +1,11 @@
+# utilities
+mitmproxy==0.17
+watchdog==0.8.3
+youtube-dl==2016.3.1
+virtualenv==14.0.6
+pyinotify==0.9.4
+## zenmap==6.40
+##iotop==0.6
+##command-not-found==0.3
+pew
+ntfy

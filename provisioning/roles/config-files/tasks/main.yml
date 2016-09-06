@@ -1,0 +1,45 @@
+- name: Add dev user
+  user: name={{ username }}
+        state=present
+        groups="sudo"
+        password={{ user_pass }}
+        shell=/usr/bin/zsh
+  become: yes
+
+- name: Clone oh-my-zsh repo
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git
+       dest=/home/{{ username }}/.oh-my-zsh
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Clone shellrc repo
+  git: repo=https://github.com/ice3/shellrc.git
+       dest=/home/{{ username }}/.shellrc
+       accept_hostkey=yes
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Symlink config files
+  file: src=/home/{{ username }}/{{ item.src }} path=/home/{{username }}/{{ item.dest }} state=link owner={{ username }} force=yes
+  with_items:
+    - { src: '.shellrc/dotfiles/bashrc', dest: '.bashrc' }
+    - { src: '.shellrc/dotfiles/bash_profile', dest: '.bash_profile' }
+    - { src: '.shellrc/dotfiles/inputrc', dest: '.inputrc'}
+    - { src: '.shellrc/dotfiles/zshrc', dest: '.zshrc'}
+    - { src: '.shellrc/dotfiles/zlogin', dest: '.zlogin'}
+    - { src: '.shellrc/dotfiles/vimrc', dest: '.vimrc'}
+    - { src: '.shellrc/dotfiles/vim', dest: '.vim'}
+    - { src: '.shellrc/dotfiles/gitignore', dest: '.gitigrore'}
+    - { src: '.shellrc/dotfiles/byobu', dest: '.byobu'}
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Install vim plugins
+  # we can't just run vim +PluginInstall... because it would launch the UI and wait for input
+  # http://stackoverflow.com/questions/33672491/how-to-use-ansible-to-provision-vim-vundle-plugin
+  shell: vim -E -s -c "source /home/{{ username }}/.vimrc" +PluginInstall +qall -V
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Install fonts for vim
+  shell: cd /home/{{ username }}/.shellrc/vim.d/fonts && ./install.sh

@@ -1,0 +1,22 @@
+- name: Copy the requirements file
+  copy: src={{ item.src }} dest={{item.dest}} force=yes
+  with_items:
+    - { src: 'requirements-general.txt', dest: '/tmp/' }
+    - { src: 'requirements-sci.txt', dest: '/tmp/' }
+    - { src: 'requirements-utils.txt', dest: '/tmp/' }
+
+- name: Install system dependancies
+  apt: name={{ item }} state=present
+  with_items:
+    - libtiff5-dev
+    - libjpeg8-dev
+    - libfreetype6-dev
+
+- name: Install general packages for python2.7
+  pip: requirements=/tmp/requirements-general.txt
+
+- name: Install scientific packages for python2.7
+  pip: requirements=/tmp/requirements-sci.txt
+
+- name: Install utils packages for python2.7
+  pip: requirements=/tmp/requirements-utils.txt
