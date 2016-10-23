@@ -1,6 +1,8 @@
 vim_version: "7.4.2305"
 sublimetext_build: 3114
 pip_version: "8.1.2"
+vagrant_version: "1.8.5"
 
 username: mfalce
 user_pass: "$6$rounds=656000$7BRN95ZRiJmPz1r4$vRAbeBpB988.NdwWRax0HWDBAdkIHnAqAZrlPfUqwcDjA9xV1ABFn5ovIjUcyVRHii4qg235VGm3kNYdscqOa1"
+hostname: install

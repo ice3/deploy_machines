@@ -1,40 +1,12 @@
 ---
-- name: Install system packages
-  hosts: all
+- hosts: all
   become: True
   gather_facts: True
   roles:
-    - {role: 'general-dependancies'}
-
-- name: Install pip
-  hosts: all
-  become: True
-  gather_facts: True
-  roles:
-    - {role: 'ansible-pip'}
-
-- name: Install python packages
-  hosts: all
-  become: True
-  gather_facts: True
-  roles:
-    - {role: 'python-packages'}
-
-- name: Install ViM
-  hosts: all
-  become: True
-  gather_facts: True
-  roles:
-    - {role: 'ansible-vim'}
-
-- name: Install sublime text 3
-  hosts: all
-  become: True
-  gather_facts: True
-  roles:
-    - {role: 'ansible-role-sublimetext'}
-
-- name: Install config files (shell, zsh, ...)
-  hosts: all
-  roles:
-    - {role: 'config-files'}
+    - general-dependancies
+    - ansible-role-vagrant
+    - ansible-pip
+    - python-packages
+    - ansible-vim
+    - ansible-role-sublimetext
+    - config-files

@@ -7,3 +7,6 @@
 [submodule "provisioning/roles/ansible-pip"]
 	path = provisioning/roles/ansible-pip
 	url = https://github.com/bobbyrenwick/ansible-pip.git
+[submodule "provisioning/roles/ansible-role-vagrant"]
+	path = provisioning/roles/ansible-role-vagrant
+	url = https://github.com/jdauphant/ansible-role-vagrant.git

@@ -6,6 +6,9 @@
         shell=/usr/bin/zsh
   become: yes
 
+- name: Set hostname
+  hostname: name={{ hostname }}
+
 - name: Clone oh-my-zsh repo
   git: repo=https://github.com/robbyrussell/oh-my-zsh.git
        dest=/home/{{ username }}/.oh-my-zsh
@@ -19,7 +22,15 @@
   become: yes
   become_user: "{{ username }}"
 
-- name: Symlink config files
+- name: Ensure ST2/3 directories exists in .config
+  file: path=/home/{{username }}/{{ item }} state=directory owner={{ username }} recurse=yes
+  with_items:
+    - '.config/sublime-text-2/Packages/'
+    - '.config/sublime-text-3/Packages/'
+
+
+- name: Symlink config
+  # /home/mfalce/.shellrc/rc.d/virtual_env_wrapper_init.sh:source:9: no such file or directory
   file: src=/home/{{ username }}/{{ item.src }} path=/home/{{username }}/{{ item.dest }} state=link owner={{ username }} force=yes
   with_items:
     - { src: '.shellrc/dotfiles/bashrc', dest: '.bashrc' }
@@ -30,9 +41,13 @@
     - { src: '.shellrc/dotfiles/vimrc', dest: '.vimrc'}
     - { src: '.shellrc/dotfiles/vim', dest: '.vim'}
     - { src: '.shellrc/dotfiles/gitignore', dest: '.gitigrore'}
+    - { src: '.shellrc/dotfiles/gitconfig', dest: '.gitconfig'}
     - { src: '.shellrc/dotfiles/byobu', dest: '.byobu'}
+    - { src: '.shellrc/config/sublime-text-2/Packages/User', dest: '.config/sublime-text-2/Packages/User'}
+    - { src: '.shellrc/config/sublime-text-3/Packages/User', dest: '.config/sublime-text-3/Packages/User'}
   become: yes
   become_user: "{{ username }}"
+
 
 - name: Install vim plugins
   # we can't just run vim +PluginInstall... because it would launch the UI and wait for input
@@ -43,3 +58,5 @@
 
 - name: Install fonts for vim
   shell: cd /home/{{ username }}/.shellrc/vim.d/fonts && ./install.sh
+  become: yes
+  become_user: "{{ username }}"

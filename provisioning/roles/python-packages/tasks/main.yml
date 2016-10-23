@@ -11,6 +11,7 @@
     - libtiff5-dev
     - libjpeg8-dev
     - libfreetype6-dev
+    - libffi-dev
 
 - name: Install general packages for python2.7
   pip: requirements=/tmp/requirements-general.txt

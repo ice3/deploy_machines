@@ -7,6 +7,30 @@
   apt: update_cache=yes upgrade=dist
   when: packages.stderr != ""
 
+- name: Fail if not a new release of Ubuntu for docker installation
+  fail:
+    msg: "{{ ansible_distribution_version }} is not an acceptable version of Ubuntu for this role"
+  when: ansible_distribution_version|version_compare(12.04, '<') or ansible_distribution_version|version_compare(12.10, '=')
+
+- name: Install docker dependancies
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: Add docker apt keys
+  apt_key: keyserver={{ item.server }}  id={{ item.id }}
+  with_items:
+    - {server: "keyserver.ubuntu.com", id: "36A1D7869245C8950F966E92D8576A8BA88D21E9"}
+    - {server: "hkp://p80.pool.sks-keyservers.net:80", id: "58118E89F3A912897C070ADBF76221572C52609D"}
+
+- name: Add new packages to apt
+  apt_repository: repo='{{ item }}' state=present update_cache=yes
+  become: True
+  with_items:
+    # - 'deb http://ppa.launchpad.net/saiarcot895/chromium-beta/ubuntu xenial main '
+    - 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+
 - name: Install Debian packages
   apt: pkg={{item}} state=present update_cache=yes
   with_items:
@@ -17,6 +41,15 @@
     - npm
     - zsh
     - byobu
+    - rsync
+    - curl
+    - iotop
+
+- name: Install packages for local network machines (home, work)
+  apt: pkg={{item}} state=present update_cache=yes
+  with_items:
+   - avahi-daemon
+
 
 - name: Install developper Debian packages
   apt: pkg={{item}} state=present update_cache=yes
@@ -29,4 +62,13 @@
     - python2.7-dev
     - g++
     - make
+    - docker-engine
 
+- name: Install graphical packages
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items:
+    - chromium-browser
+    # - chromium-browser-l10n
+
+- name: Start Docker
+  service: name=docker state=restarted
