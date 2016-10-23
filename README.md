@@ -2,7 +2,7 @@
 Ansible playbook to deploy to a machine
 
 
-# Use
+# Usage
 
 There is a makefile to deploy and install a vagrant VM
 
@@ -14,7 +14,9 @@ There is a makefile to deploy and install a vagrant VM
  * vim (compiled), sublime text 3
  * config files from ice3/shellrc
  
- # To do
+
+# To do
  
-  * add different roles for types of machines (server, personal laptop, pro laptop)
-  * add ansible vault to store secrets (passwords, secret keys...)
+ * test to use on localhost...
+ * add different roles for types of machines (server, personal laptop, pro laptop)
+ * add ansible vault to store secrets (passwords, secret keys...)
